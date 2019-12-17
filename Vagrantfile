@@ -3,27 +3,6 @@
 
 ENV["LC_CTYPE"] = "en_US.UTF-8"
 
-$up = <<-SCRIPT
-  apt-get update && apt-get upgrade -y
-SCRIPT
-
-$docker = <<-SCRIPT
-  curl -o- https://get.docker.com | sh
-SCRIPT
-
-$dockerCompose = <<-SCRIPT
-  curl -fsSL "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose
-SCRIPT
-
-$nvm = <<-SCRIPT
-  git clone https://github.com/nvm-sh/nvm.git ~/.nvm
-  cd ~/.nvm && git checkout v0.35.1
-SCRIPT
-
-$pyenv = <<-SCRIPT
-  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-SCRIPT
-
 Vagrant.configure("2") do |config|
 
   config.vm.box = "ubuntu/xenial64"
@@ -42,14 +21,10 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8888, host: 49156, id: "jupyter"
 
   # root provisioning
-  config.vm.provision "shell", name: "Update and Upgrade...", inline: $up
-  config.vm.provision "shell", name: "Installing Docker CE...", inline: $docker
-  config.vm.provision "shell", name: "Installing Docker Compose...", inline: $dockerCompose
+  config.vm.provision "shell", name: "System Tools", path: ".Vagrantstrap/add-system-tools.sh"
 
   # user provisioning
-  config.vm.provision "shell", name: "Installing Node Version Manager...", inline: $nvm, privileged: false
-  config.vm.provision "shell", name: "Installing Python Version Management tool...", inline: $pyenv, privileged: false
-  config.vm.provision "shell", name: "Installing Python Version Management build dependencies...", path: ".Vagrantstrap/pyenv-build-deps.sh", privileged: false
+  config.vm.provision "shell", name: "User Tools", path: ".Vagrantstrap/add-user-tools.sh", privileged: false
   config.vm.provision "file", source: ".Vagrantstrap/.bashrc", destination: ".bashrc"
   config.vm.provision "file", source: ".Vagrantstrap/.profile", destination: ".profile"
 
