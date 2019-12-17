@@ -1,6 +1,5 @@
-
-# Created by https://www.gitignore.io/api/linux,macos,windows
-# Edit at https://www.gitignore.io/?templates=linux,macos,windows
+# Created by https://www.gitignore.io/api/linux,macos,vagrant,windows
+# Edit at https://www.gitignore.io/?templates=linux,macos,vagrant,windows
 
 ### Linux ###
 *~
@@ -45,6 +44,16 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### Vagrant ###
+# General
+.vagrant/
+
+# Log files (if you are creating logs in debug mode, uncomment this)
+*.log
+
+### Vagrant Patch ###
+*.box
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -71,4 +80,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/linux,macos,windows
+# End of https://www.gitignore.io/api/linux,macos,vagrant,windows
